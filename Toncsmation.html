@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toncsmation Engineering - Electrical Engineering Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#F36F21',
+                            hover: '#d95d13',
+                            dark: '#0B132B',
+                            navy: '#101B35',
+                            slate: '#1E293B',
+                            muted: '#94A3B8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(11, 19, 43, 0.92) 0%, rgba(11, 19, 43, 0.8) 50%, rgba(11, 19, 43, 0.45) 100%), 
+                              url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Navigation Active Indicator */
+        .nav-item {
+            position: relative;
+            transition: color 0.2s ease-in-out;
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #F36F21;
+            border-radius: 2px;
+            transition: width 0.25s ease-in-out;
+        }
+        .nav-item.active {
+            color: #F36F21 !important;
+        }
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        /* Mobile Active Link */
+        .drawer-nav-link.active {
+            background-color: #FFF7ED;
+            color: #F36F21;
+            font-weight: 700;
+        }
+        
+        /* Smooth Mobile Left Drawer Animations */
+        .drawer-slide {
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .backdrop-fade {
+            transition: opacity 0.35s ease-in-out, visibility 0.35s ease-in-out;
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* Floating Action Buttons */
+        .fab {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(16px) scale(0.9);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        }
+        .fab.fab-visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        @keyframes whatsapp-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+            50% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+        }
+        .fab-whatsapp {
+            animation: whatsapp-pulse 2.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="font-sans bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <header class="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo -->
+                <a href="#home" class="flex items-center gap-3 group">
+                    <div class="relative flex items-center justify-center w-11 h-11 rounded-lg bg-orange-50 text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-bolt text-2xl"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 leading-none">Toncsmation</span>
+                        <span class="text-[10px] font-bold tracking-widest text-slate-500 uppercase mt-1">ENGINEERING SOLUTIONS</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold">
+                    <a href="#home" class="nav-item active text-slate-600 hover:text-brand-orange">Home</a>
+                    <a href="#about" class="nav-item text-slate-600 hover:text-brand-orange">About</a>
+                    <a href="#services" class="nav-item text-slate-600 hover:text-brand-orange">Services</a>
+                    <a href="#industries" class="nav-item text-slate-600 hover:text-brand-orange">Industries</a>
+                    <a href="#why-us" class="nav-item text-slate-600 hover:text-brand-orange">Why Us</a>
+                    <a href="#contact" class="nav-item text-slate-600 hover:text-brand-orange">Contact</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden lg:flex items-center">
+                    <a href="#contact" class="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-brand-orange text-white font-semibold text-sm hover:bg-brand-hover shadow-md hover:shadow-lg transition-all duration-200 gap-2">
+                        <span>Request a Quote</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" type="button" class="text-slate-700 hover:text-brand-orange p-2 focus:outline-none" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Backdrop Overlay -->
+    <div id="mobile-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 opacity-0 invisible backdrop-fade"></div>
+
+    <!-- Mobile Left Drawer -->
+    <aside id="mobile-drawer" class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 shadow-2xl flex flex-col -translate-x-full drawer-slide">
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+            <a href="#home" class="flex items-center gap-2.5">
+                <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-orange-50 text-brand-orange">
+                    <i class="fa-solid fa-bolt text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-extrabold text-slate-900 leading-none">Toncsmation</span>
+                    <span class="text-[9px] font-bold tracking-wider text-slate-500 uppercase mt-0.5">ENGINEERING</span>
+                </div>
+            </a>
+            <button id="close-drawer-btn" class="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <nav class="flex-1 px-6 py-6 space-y-2 overflow-y-auto font-semibold">
+            <a href="#home" class="drawer-nav-link active drawer-link flex items-center justify-between py-3 px-4 rounded-xl text-slate-700 hover:bg-slate-50 hover:text-brand-orange transition-colors">
+                <span>Home</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+            <a href="#about" class="drawer-nav-link drawer-link flex items-center justify-between py-3 px-4 rounded-xl text-slate-700 hover:bg-slate-50 hover:text-brand-orange transition-colors">
+                <span>About</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+            <a href="#services" class="drawer-nav-link drawer-link flex items-center justify-between py-3 px-4 rounded-xl text-slate-700 hover:bg-slate-50 hover:text-brand-orange transition-colors">
+                <span>Services</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+            <a href="#industries" class="drawer-nav-link drawer-link flex items-center justify-between py-3 px-4 rounded-xl text-slate-700 hover:bg-slate-50 hover:text-brand-orange transition-colors">
+                <span>Industries</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+            <a href="#why-us" class="drawer-nav-link drawer-link flex items-center justify-between py-3 px-4 rounded-xl text-slate-700 hover:bg-slate-50 hover:text-brand-orange transition-colors">
+                <span>Why Us</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+            <a href="#contact" class="drawer-nav-link drawer-link flex items-center justify-between py-3 px-4 rounded-xl text-slate-700 hover:bg-slate-50 hover:text-brand-orange transition-colors">
+                <span>Contact</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+        </nav>
+
+        <div class="p-6 border-t border-gray-100 bg-slate-50">
+            <a href="#contact" class="drawer-link flex w-full items-center justify-center px-6 py-3.5 rounded-xl bg-brand-orange text-white font-semibold text-sm hover:bg-brand-hover shadow-md gap-2">
+                <span>Request a Quote</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </a>
+        </div>
+    </aside>
+
+    <section id="home" class="relative hero-bg min-h-[640px] lg:min-h-[720px] flex items-center text-white py-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+            <div class="max-w-2xl">
+                <span class="inline-block text-brand-orange font-extrabold text-xs sm:text-sm tracking-wider uppercase mb-4">
+                    BUILDING A STRONGER TOMORROW
+                </span>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+                    Engineering Solutions Built for <span class="text-brand-orange">Performance.</span>
+                </h1>
+
+                <p class="text-base sm:text-lg text-slate-300 font-normal leading-relaxed mb-8">
+                    We deliver innovative and reliable electrical engineering solutions for industrial, commercial, and infrastructure projects across Tanzania and beyond.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 mb-16">
+                    <a href="#contact" class="inline-flex items-center justify-center px-7 py-3.5 rounded-xl bg-brand-orange text-white font-semibold text-sm hover:bg-brand-hover shadow-lg hover:shadow-orange-500/20 transition-all duration-200 gap-2">
+                        <span>Request a Quote</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                    <a href="#services" class="inline-flex items-center justify-center px-7 py-3.5 rounded-xl bg-transparent border border-white/30 text-white font-semibold text-sm hover:bg-white/10 backdrop-blur-sm transition-all duration-200">
+                        View Our Services
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-white/10">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center text-brand-orange text-xl border border-white/10">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-white">10+</div>
+                            <div class="text-xs text-slate-400 font-medium">Years Experience</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center text-brand-orange text-xl border border-white/10">
+                            <i class="fa-solid fa-plug-circle-bolt"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-white">50+</div>
+                            <div class="text-xs text-slate-400 font-medium">Projects Completed</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center text-brand-orange text-xl border border-white/10">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-white">20+</div>
+                            <div class="text-xs text-slate-400 font-medium">Professional Engineers</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <main class="flex-grow">
+        
+        <!-- About Section -->
+        <section id="about" class="py-20 lg:py-28 bg-white border-b border-gray-100 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+                    <!-- LEFT: Narrative + Capability Checklist -->
+                    <div class="lg:col-span-6">
+                        <span class="text-brand-orange font-bold text-xs uppercase tracking-widest">About Toncsmation Engineering</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-6 leading-tight">
+                            Grounded in Tanzania's grid, built to industrial standard
+                        </h2>
+                        <p class="text-slate-600 leading-relaxed mb-5">
+                            Toncsmation Engineering Solutions was founded on a simple premise: industrial and commercial clients in East Africa deserve electrical work that meets the same standard as anywhere in the world, delivered by engineers who understand local terrain, permitting, and grid conditions.
+                        </p>
+                        <p class="text-slate-600 leading-relaxed mb-8">
+                            From our Dar es Salaam base, our licensed engineers and technicians plan, install, and maintain the electrical backbone of factories, commercial sites, and public infrastructure — backed by an in-house materials supply chain that keeps projects moving without costly import delays.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-10">
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-check text-xs"></i>
+                                </div>
+                                <span class="text-sm text-slate-700 font-medium">IEC & IEEE-aligned installation practice</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-check text-xs"></i>
+                                </div>
+                                <span class="text-sm text-slate-700 font-medium">TANESCO-compliant grid connections</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-check text-xs"></i>
+                                </div>
+                                <span class="text-sm text-slate-700 font-medium">In-house testing & calibration lab</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-check text-xs"></i>
+                                </div>
+                                <span class="text-sm text-slate-700 font-medium">24/7 emergency response teams</span>
+                            </div>
+                        </div>
+
+                        <a href="#contact" class="inline-flex items-center gap-2 text-sm font-bold text-brand-orange hover:text-brand-hover">
+                            <span>Talk to our engineering team</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- RIGHT: Image + Floating Accreditation Card -->
+                    <div class="lg:col-span-6 relative">
+                        <div class="relative rounded-3xl overflow-hidden aspect-[4/5] sm:aspect-[5/4] shadow-xl">
+                            <img src="bariki2.png" alt="Engineer inspecting an industrial control panel" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/50 via-transparent to-transparent"></div>
+                        </div>
+
+                        <!-- Floating stat card -->
+                        <div class="absolute -bottom-8 -left-4 sm:-left-8 bg-brand-navy text-white rounded-2xl p-6 shadow-2xl border border-slate-800 w-56">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-lg bg-brand-orange/20 text-brand-orange flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-certificate"></i>
+                                </div>
+                                <span class="text-2xl font-extrabold">98%</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">Projects delivered on schedule and within compliance sign-off</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-24 bg-slate-50 border-b border-gray-100">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brand-orange font-bold text-xs uppercase tracking-widest">OUR SERVICES</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-4">Comprehensive Electrical Engineering Solutions</h2>
+                    <p class="text-slate-600 text-base sm:text-lg">We offer end-to-end electrical design, high-quality material supply, advanced process automation, and emergency troubleshooting.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Service 1: Supply Electrical Materials -->
+                    <div class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <div class="w-14 h-14 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-boxes-packing"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-orange transition-colors">Supply Electrical Materials</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">
+                            Sourcing and procurement of certified industrial-grade electrical cables, switchgears, circuit breakers, power distribution boards, and high-quality electrical accessories.
+                        </p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-sm font-bold text-brand-orange hover:text-brand-hover">
+                            <span>Inquire Supply</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 2: Installation and Maintenance -->
+                    <div class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <div class="w-14 h-14 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-orange transition-colors">Installation & Maintenance of Electrical Systems</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">
+                            Full lifecycle wiring, control panel setup, power grid integration, scheduled preventative maintenance, and safety audits for industrial and commercial facilities.
+                        </p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-sm font-bold text-brand-orange hover:text-brand-hover">
+                            <span>Request Installation</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 3: Industrial Automations -->
+                    <div class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <div class="w-14 h-14 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-gears"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-orange transition-colors">Industrial Automations</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">
+                            Design and deployment of PLC systems, SCADA architectures, variable speed drives (VSD), and automated control panels to optimize factory operational efficiency.
+                        </p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-sm font-bold text-brand-orange hover:text-brand-hover">
+                            <span>Automate Operations</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 4: Power Factor Correction -->
+                    <div class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <div class="w-14 h-14 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-orange transition-colors">Power Factor Correction</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">
+                            Automatic Capacitor Bank Panel (APFC) installation, load analysis, and reactive power stabilization to minimize utility penalty charges and lower power consumption.
+                        </p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-sm font-bold text-brand-orange hover:text-brand-hover">
+                            <span>Optimize Energy</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 5: Electrical Machines Troubleshoot -->
+                    <div class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <div class="w-14 h-14 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-wave-square"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-orange transition-colors">Electrical Machines Troubleshoot</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">
+                            Rapid fault detection, motor coil testing, generator diagnosis, stator/rotor inspections, and emergency repairs to prevent costly production downtime.
+                        </p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-sm font-bold text-brand-orange hover:text-brand-hover">
+                            <span>Get Diagnostics</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 6: Process Instrumentation -->
+                    <div class="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <div class="w-14 h-14 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-orange transition-colors">Process Instrumentation</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">
+                            Integration and calibration of pressure transmitters, flow meters, temperature controllers, level sensors, and digital measurement instruments.
+                        </p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-sm font-bold text-brand-orange hover:text-brand-hover">
+                            <span>Setup Sensors</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Industries Section -->
+        <section id="industries" class="py-20 lg:py-28 bg-white border-b border-gray-100">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+                    <div class="max-w-2xl">
+                        <span class="text-brand-orange font-bold text-xs uppercase tracking-widest">Sectors We Serve</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-4">Industries Served</h2>
+                        <p class="text-slate-600 text-base sm:text-lg">Every sector runs on different loads, uptime demands, and compliance rules. Our teams tailor electrical solutions to the way each industry actually operates.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <div class="flex items-start gap-5 p-6 rounded-2xl border border-slate-200/80 hover:border-brand-orange/40 hover:bg-orange-50/30 transition-colors duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-brand-dark text-brand-orange flex items-center justify-center text-xl flex-shrink-0">
+                            <i class="fa-solid fa-industry"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 mb-1.5">Manufacturing & Processing</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Motor control centers, VSDs, and automation for factory lines that can't afford unplanned downtime.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-5 p-6 rounded-2xl border border-slate-200/80 hover:border-brand-orange/40 hover:bg-orange-50/30 transition-colors duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-brand-dark text-brand-orange flex items-center justify-center text-xl flex-shrink-0">
+                            <i class="fa-solid fa-helmet-safety"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 mb-1.5">Mining & Extractives</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Rugged power distribution and instrumentation engineered for remote, high-vibration site conditions.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-5 p-6 rounded-2xl border border-slate-200/80 hover:border-brand-orange/40 hover:bg-orange-50/30 transition-colors duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-brand-dark text-brand-orange flex items-center justify-center text-xl flex-shrink-0">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 mb-1.5">Energy & Utilities</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Substation support, power factor correction, and grid-tie work aligned to TANESCO requirements.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-5 p-6 rounded-2xl border border-slate-200/80 hover:border-brand-orange/40 hover:bg-orange-50/30 transition-colors duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-brand-dark text-brand-orange flex items-center justify-center text-xl flex-shrink-0">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 mb-1.5">Commercial & Real Estate</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Wiring, backup power, and building systems for offices, retail, and mixed-use developments.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-5 p-6 rounded-2xl border border-slate-200/80 hover:border-brand-orange/40 hover:bg-orange-50/30 transition-colors duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-brand-dark text-brand-orange flex items-center justify-center text-xl flex-shrink-0">
+                            <i class="fa-solid fa-road"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 mb-1.5">Construction & Infrastructure</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Site electrification from groundbreaking through commissioning, coordinated with build schedules.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-5 p-6 rounded-2xl border border-slate-200/80 hover:border-brand-orange/40 hover:bg-orange-50/30 transition-colors duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-brand-dark text-brand-orange flex items-center justify-center text-xl flex-shrink-0">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 mb-1.5">Public Sector & Government</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Tender-ready compliance documentation and delivery for municipal and government-backed projects.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Us Section -->
+        <section id="why-us" class="py-20 lg:py-28 bg-brand-dark text-white border-b border-slate-800 relative overflow-hidden">
+            <!-- Subtle grid texture -->
+            <div class="absolute inset-0 opacity-[0.07] bg-[radial-gradient(#F36F21_1px,transparent_1px)] [background-size:28px_28px]"></div>
+
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 relative reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+
+                    <!-- LEFT: Heading + Key Credential -->
+                    <div class="lg:col-span-4">
+                        <span class="text-brand-orange font-bold text-xs uppercase tracking-widest">Why Choose Toncsmation</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold mt-2 mb-5 leading-tight">Engineered for reliability, not just delivery</h2>
+                        <p class="text-slate-400 leading-relaxed mb-8">
+                            Clients return to us because the work still performs years after handover — not just at commissioning.
+                        </p>
+                        <div class="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10">
+                            <div class="w-12 h-12 rounded-xl bg-brand-orange flex items-center justify-center text-xl flex-shrink-0">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white text-sm">2-Year Workmanship Warranty</div>
+                                <div class="text-xs text-slate-400">On every completed installation</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Differentiator Grid -->
+                    <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                        <div class="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-brand-orange/50 hover:bg-white/[0.06] transition-all duration-300">
+                            <div class="w-11 h-11 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Certified Local Engineers</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">A resident team of registered engineers and technicians — not fly-in contractors — so support is always close at hand.</p>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-brand-orange/50 hover:bg-white/[0.06] transition-all duration-300">
+                            <div class="w-11 h-11 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">24/7 Emergency Response</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">Faults get triaged around the clock, with dispatch teams positioned to reach industrial sites fast.</p>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-brand-orange/50 hover:bg-white/[0.06] transition-all duration-300">
+                            <div class="w-11 h-11 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-warehouse"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">In-House Materials Supply</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">Certified stock held locally cuts procurement lag, so projects aren't stalled waiting on imports.</p>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-brand-orange/50 hover:bg-white/[0.06] transition-all duration-300">
+                            <div class="w-11 h-11 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Full Compliance Documentation</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">Every project ships with sign-off records ready for audits, tenders, and regulatory inspection.</p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us Section (White Background + Image-Matched Layout) -->
+        <section id="contact" class="py-24 bg-white text-slate-900 border-b border-gray-100">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    
+                    <!-- LEFT COLUMN: Contact Details & Map Card -->
+                    <div class="lg:col-span-5 space-y-8">
+                        <div>
+                            <span class="text-brand-orange font-extrabold text-xs uppercase tracking-wider block mb-2">GET IN TOUCH</span>
+                            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+                                Start Your Project Consultation
+                            </h2>
+                            <p class="text-slate-600 text-sm leading-relaxed">
+                                Connect with our engineering specialists in Dar es Salaam to discuss tenders, RFPs, feasibility assessments, or electrical project designs.
+                            </p>
+                        </div>
+
+                        <!-- Contact Details List -->
+                        <div class="space-y-6">
+                            <!-- Main Office -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-base mb-1">Main Office</h4>
+                                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                                        Obama Road, Sea View, P.O. Box 25120,<br>Dar es Salaam, Tanzania
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Direct Line & Helpline -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-base mb-1">Direct Line & 24/7 Helpline</h4>
+                                    <p class="text-slate-600 text-xs sm:text-sm">
+                                        <a href="tel:+255715307733" class="hover:text-brand-orange transition-colors">+255 715 307 733</a> &bull; <a href="tel:+255756572721" class="hover:text-brand-orange transition-colors">+255 756 572 721</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Official Inquiries -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-orange-50 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-base mb-1">Official Inquiries</h4>
+                                    <p class="text-slate-600 text-xs sm:text-sm">
+                                        info@toncsmation.co.tz &bull; rfp@toncsmation.co.tz
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map Location Card -->
+                        <div class="rounded-2xl bg-slate-900 text-white p-5 border border-slate-800 shadow-md">
+                            <div class="flex items-center justify-between text-xs font-bold mb-3">
+                                <span class="flex items-center gap-2 text-slate-200">
+                                    <i class="fa-solid fa-map-pin text-brand-orange"></i> Dar es Salaam HQ Location
+                                </span>
+                                <span class="text-brand-orange uppercase">East Africa Hub</span>
+                            </div>
+                            
+                            <!-- Stylized Map Frame -->
+                            <div class="relative h-32 rounded-xl bg-slate-800 border border-slate-700 overflow-hidden flex items-center justify-center">
+                                <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                                <div class="relative z-10 px-4 py-2 bg-slate-900/90 backdrop-blur-md rounded-full border border-slate-700 text-xs font-bold text-slate-200 flex items-center gap-2 shadow-lg">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-orange animate-pulse"></span>
+                                    <span>Obama Road, Sea View</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN: Project Consultation Form Card (Navy Container for Sharp Contrast) -->
+                    <div class="lg:col-span-7">
+                        <div class="rounded-3xl bg-brand-navy p-6 sm:p-10 text-white shadow-2xl border border-slate-800">
+                            <form onsubmit="event.preventDefault();" class="space-y-5">
+                                
+                                <!-- Row 1: Name & Company -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-2">FULL NAME *</label>
+                                        <input type="text" placeholder="e.g. Eng. Joseph Mbeki" required class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-orange text-sm transition-colors">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-2">COMPANY / ORGANIZATION</label>
+                                        <input type="text" placeholder="e.g. Ministry / Private Dev" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-orange text-sm transition-colors">
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Email & Phone -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-2">WORK EMAIL *</label>
+                                        <input type="email" placeholder="name@company.co.tz" required class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-orange text-sm transition-colors">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-2">PHONE NUMBER *</label>
+                                        <input type="tel" placeholder="+255 700 000 000" required class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-orange text-sm transition-colors">
+                                    </div>
+                                </div>
+
+                                <!-- Row 3: Discipline Dropdown -->
+                                <div>
+                                    <label class="block text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-2">PROJECT DISCIPLINE</label>
+                                    <select class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white focus:outline-none focus:border-brand-orange text-sm transition-colors cursor-pointer">
+                                        <option class="bg-slate-900 text-white">Supply Electrical Materials</option>
+                                        <option class="bg-slate-900 text-white">Installation and Maintenance of Electrical Systems</option>
+                                        <option class="bg-slate-900 text-white">Industrial Automations</option>
+                                        <option class="bg-slate-900 text-white">Power Factor Correction</option>
+                                        <option class="bg-slate-900 text-white">Electrical Machines Troubleshoot</option>
+                                        <option class="bg-slate-900 text-white">Process Instrumentation</option>
+                                    </select>
+                                </div>
+
+                                <!-- Row 4: Message Textarea -->
+                                <div>
+                                    <label class="block text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-2">PROJECT OVERVIEW / MESSAGE *</label>
+                                    <textarea rows="4" placeholder="Briefly describe your project requirements, location, target deadline..." required class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-orange text-sm transition-colors resize-none"></textarea>
+                                </div>
+
+                                <!-- Row 5: Submit Button -->
+                                <button type="submit" class="w-full py-4 px-6 rounded-xl bg-brand-orange hover:bg-brand-hover text-white font-extrabold text-sm transition-all duration-200 shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 mt-2">
+                                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                                    <span>Submit Consultation Request</span>
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-brand-dark text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-slate-800">
+
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-brand-orange/20 text-brand-orange">
+                            <i class="fa-solid fa-bolt text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xl font-extrabold text-white">Toncsmation</span>
+                            <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">ENGINEERING SOLUTIONS</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Delivering reliable electrical systems, process instrumentation, and power factor solutions for industrial and commercial success across Tanzania.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Our Services</h5>
+                    <ul class="text-xs space-y-2.5">
+                        <li><a href="#services" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Supply Electrical Materials</span></a></li>
+                        <li><a href="#services" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Installation & Maintenance</span></a></li>
+                        <li><a href="#services" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Industrial Automations</span></a></li>
+                        <li><a href="#services" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Power Factor Correction</span></a></li>
+                        <li><a href="#services" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Electrical Machines Troubleshoot</span></a></li>
+                        <li><a href="#services" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Process Instrumentation</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Quick Links</h5>
+                    <ul class="text-xs space-y-2.5">
+                        <li><a href="#home" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Home</span></a></li>
+                        <li><a href="#about" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>About Us</span></a></li>
+                        <li><a href="#industries" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Industries Served</span></a></li>
+                        <li><a href="#why-us" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Why Choose Us</span></a></li>
+                        <li><a href="#contact" class="flex items-center gap-2 hover:text-brand-orange transition-colors group"><i class="fa-solid fa-chevron-right text-[9px] text-brand-orange/70 group-hover:translate-x-0.5 transition-transform"></i><span>Get a Quote</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Contact Info</h5>
+                    <div class="space-y-3.5">
+                        <div class="flex items-start gap-3">
+                            <div class="w-7 h-7 rounded-md bg-white/5 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-location-dot text-xs"></i>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed pt-1">Obama Road, Sea View, P.O. Box 25120, Dar es Salaam, TANZANIA</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-7 h-7 rounded-md bg-white/5 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-phone text-xs"></i>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed pt-1">+255 715 307 733 / +255 756 572 721</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-7 h-7 rounded-md bg-white/5 text-brand-orange flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-envelope text-xs"></i>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed pt-1">info@toncsmation.co.tz</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+                <p>&copy; <span id="year"></span> Toncsmation Engineering Solutions. All rights reserved.</p>
+                <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+                    <a href="#home" class="hover:text-brand-orange">Privacy Policy</a>
+                    <a href="#home" class="hover:text-brand-orange">Terms of Service</a>
+                    <span class="text-slate-600">|</span>
+                    <span>Website designed by <a href="https://www.primetechnologies.co.tz" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-300 hover:text-brand-orange transition-colors">Prime Technologies</a></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Buttons -->
+    <div class="fixed bottom-6 right-6 z-30 flex flex-col items-center gap-3">
+        <button id="back-to-top-btn" type="button" aria-label="Back to top" class="fab w-12 h-12 rounded-full bg-brand-navy hover:bg-brand-orange text-white flex items-center justify-center shadow-lg border border-slate-700 hover:border-brand-orange transition-colors duration-300">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        <a id="whatsapp-btn" href="https://wa.me/255715307733?text=Hello%20Toncsmation%20Engineering%2C%20I%27d%20like%20to%20enquire%20about%20your%20services." target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp" class="fab fab-whatsapp w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#1DA851] text-white flex items-center justify-center shadow-lg text-2xl">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+        // Set dynamic copyright year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Off-Canvas Menu Controls
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeDrawerBtn = document.getElementById('close-drawer-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileBackdrop = document.getElementById('mobile-backdrop');
+        const drawerLinks = document.querySelectorAll('.drawer-link');
+
+        function openDrawer() {
+            mobileBackdrop.classList.remove('invisible', 'opacity-0');
+            mobileBackdrop.classList.add('visible', 'opacity-100');
+            mobileDrawer.classList.remove('-translate-x-full');
+            mobileDrawer.classList.add('translate-x-0');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            mobileBackdrop.classList.remove('visible', 'opacity-100');
+            mobileBackdrop.classList.add('invisible', 'opacity-0');
+            mobileDrawer.classList.remove('translate-x-0');
+            mobileDrawer.classList.add('-translate-x-full');
+            document.body.style.overflow = '';
+        }
+
+        mobileMenuBtn.addEventListener('click', openDrawer);
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        mobileBackdrop.addEventListener('click', closeDrawer);
+
+        drawerLinks.forEach(link => {
+            link.addEventListener('click', closeDrawer);
+        });
+
+        // ScrollSpy & Active Link Management
+        const desktopNavLinks = document.querySelectorAll('.nav-item');
+        const drawerNavLinks = document.querySelectorAll('.drawer-nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        function updateActiveNav(targetId) {
+            desktopNavLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${targetId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            drawerNavLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${targetId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Intersection Observer for scroll tracking
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    updateActiveNav(id);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Click event listener for instant visual active state
+        [...desktopNavLinks, ...drawerNavLinks].forEach(link => {
+            link.addEventListener('click', function() {
+                const targetId = this.getAttribute('href').replace('#', '');
+                updateActiveNav(targetId);
+            });
+        });
+
+        // Scroll Reveal for Sections
+        const revealEls = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { root: null, threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+
+        revealEls.forEach(el => revealObserver.observe(el));
+
+        // Floating Action Buttons: Back-to-Top & WhatsApp
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        const whatsappBtn = document.getElementById('whatsapp-btn');
+        const fabs = [backToTopBtn, whatsappBtn];
+
+        function toggleFabs() {
+            if (window.scrollY > 400) {
+                fabs.forEach(btn => btn.classList.add('fab-visible'));
+            } else {
+                fabs.forEach(btn => btn.classList.remove('fab-visible'));
+            }
+        }
+
+        window.addEventListener('scroll', toggleFabs, { passive: true });
+        toggleFabs();
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
